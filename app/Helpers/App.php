@@ -20,6 +20,13 @@ if (!function_exists('successResponse')) {
     }
 }
 
+if (!function_exists('v_image')) {
+    function v_image($ext = null): string
+    {
+        return ($ext === null) ? 'mimes:jpg,png,jpeg,png,gif,bmp' : 'mimes:' . $ext;
+    }
+}
+
 if (!function_exists('failResponse')) {
     function failResponse($msg = 'Fail', $code = 400): JsonResponse
     {

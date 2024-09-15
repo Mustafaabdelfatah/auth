@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -13,5 +14,14 @@ use App\Http\Controllers\Auth\AuthController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
-});
+// Route::middleware(['auth:sanctum'])->group(function () {
+
+     /*
+    |--------------------------------------------------------------------------
+    | Employee Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::delete('employees/delete-all', [EmployeeController::class, 'destroyAll']);
+    Route::apiResource('employees', EmployeeController::class);
+
+// });

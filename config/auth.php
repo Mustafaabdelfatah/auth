@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Employee;
+
 return [
 
     /*
@@ -48,6 +50,10 @@ return [
             'driver' => 'sanctum',
             'provider' => 'merchants',
         ],
+        'employee' => [
+            'driver' => 'sanctum',
+            'provider' => 'employees',
+        ],
     ],
 
     /*
@@ -76,6 +82,11 @@ return [
         'merchants' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Merchant::class),
+        ],
+
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', Employee::class),
         ],
 
         // 'users' => [
