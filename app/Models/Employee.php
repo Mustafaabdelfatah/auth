@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Employee extends Authenticatable
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory, HasApiTokens , HasRoles;
 
     protected string $guard_name = 'sanctum';
 

@@ -89,10 +89,7 @@ return [
             'model' => env('AUTH_MODEL', Employee::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+
     ],
 
     /*
