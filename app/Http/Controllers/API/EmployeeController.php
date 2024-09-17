@@ -48,13 +48,15 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request): JsonResponse
     {
-        $data = Arr::except($request->validated(), ['avatar']);
+        $data = Arr::except($request->validated(), ['avatar', 'permissions', 'roles']);
 
         if ($request->avatar) {
             $data['avatar'] = UploadService::store($request->avatar, 'employee');
         }
 
         $employee = Employee::create($data);
+        $employee->assignRole($request->roles);
+
         return successResponse(new EmployeeResource($employee), __('api.created_success'));
     }
 
@@ -74,11 +76,15 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, Employee $employee): JsonResponse
     {
-        $data = Arr::except($request->validated(), ['avatar']);
+        $data = Arr::except($request->validated(), ['avatar', 'roles', 'permissions']);
         if ($request->avatar) {
             $data['avatar'] = UploadService::store($request->avatar, 'employees');
         }
         $employee->update($data);
+
+        $employee->syncRoles($request->roles);
+        $employee->syncPermissions($request->permissions);
+
         return successResponse(new EmployeeResource($employee), __('api.updated_success'));
     }
 
