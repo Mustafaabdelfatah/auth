@@ -1,0 +1,12 @@
+// Import global variables first
+@use '../globals/global-variables' as *;
+
+
+// Import vuetify global variables
+@use 'vuetify/settings' with (
+    $color-pack: false,
+    $button-height: $button-height,
+//   $button-background: $warning,
+//   $button-border-color: rgba(var(--v-theme-primary), 1),
+
+);

@@ -1,0 +1,46 @@
+<template>
+    <v-row class="v-row-g-2" no-gutters>
+        <v-col cols="12" lg="4" xl="3" v-for="sector in sectors">
+            <ActionsCard :title="sector.translation_name" :text="sector.translation_description">
+                <EditBtn @click="EditModal(sector)" :btnSize="20" />
+                <DeleteBtn @click="DeleteModal(sector)" :btnSize="20" />
+                <template #actions>
+                    <v-btn v-ripple="{ class: `text-primary` }" variant="text"
+                        class="d-flex w-100 border-thin border-primary" rounded="6px" border="opacity-50" height="42">
+                        {{ t('buttons.show_details') }}
+                    </v-btn>
+                </template>
+            </ActionsCard>
+        </v-col>
+    </v-row>
+
+</template>
+
+<script setup>
+import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
+const ActionsCard = defineAsyncComponent(() => import('@/components/common/Cards/ActionsCard.vue'));
+import EditBtn from '@/components/common/buttons/EditBtn.vue'
+import DeleteBtn from '@/components/common/buttons/DeleteBtn.vue'
+import { getSectors, getSectorById } from '@/services/apis/sectors.js'
+import { useAppStore } from '@/stores/app'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
+const dialog = ref(false)
+
+const emit = defineEmits(['OpenEditModal', 'OpenDeleteModal']);
+
+const EditModal = (sector) => {
+    emit('OpenEditModal',sector);
+};
+
+const DeleteModal = (sector) => {
+    emit('OpenDeleteModal',sector);
+};
+
+const props = defineProps({
+    sectors: Array,
+});
+
+</script>
+

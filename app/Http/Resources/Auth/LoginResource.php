@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Auth;
 
+use App\Models\Employee;
 use App\Models\User;
 use App\Models\Merchant;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class LoginResource extends JsonResource
      */
     private ?string $token;
 
-    public function __construct(Merchant $resource, ?string $token)
+    public function __construct(Employee $resource, ?string $token)
     {
         parent::__construct($resource);
         $this->token = $token;

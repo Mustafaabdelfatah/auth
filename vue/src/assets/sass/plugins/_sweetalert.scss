@@ -1,0 +1,22 @@
+.swal2-popup {
+    padding: 1rem;
+    background-color: rgba(var(--v-theme-background), 1);
+
+    .swal2-icon {
+        display: none !important;
+    }
+
+    .swal2-title {
+        color: rgba(var(--v-theme-on-background), 1);
+        font-size: 1.25rem;
+    }
+
+    .swal2-confirm,
+    .swal2-cancel {
+        min-width: 100px !important;
+    }
+}
+
+.swal2-popup.swal2-toast {
+    overflow: hidden;
+}

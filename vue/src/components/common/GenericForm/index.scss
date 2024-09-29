@@ -1,0 +1,125 @@
+$fontSize: .875rem;
+
+::v-deep {
+    .v-input {
+        height: 100%;
+        // max-height: 39px !important;
+    }
+
+    .v-input--density-comfortable {
+        --v-input-control-height: 54px;
+        --v-input-padding-top: 12px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        .field-label {
+            font-size: $fontSize;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 160%;
+            letter-spacing: -0.28px;
+            color: rgba(var(--v-theme-inputsLabels), 1);
+        }
+
+        .v-field__input {
+            opacity: 1 !important;
+            min-width: 0;
+            padding-inline: 1.25rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            color: rgba(var(--v-theme-inputsLabels), 1);
+            font-size: $fontSize;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 160%;
+            letter-spacing: -0.28px;
+        }
+
+        .v-field__outline {
+            border-radius: .625rem;
+            color: rgba(var(--v-theme-inputsBorder), 1);
+            --v-field-border-opacity: 1;
+        }
+
+        .v-field--error:not(.v-field--disabled) .v-field__outline {
+            color: rgb(var(--v-theme-error)) !important;
+        }
+
+    }
+
+    .v-input {
+        // margin-top: .625rem;
+    }
+
+    // .v-field__outline {
+    //     --v-field-border-opacity: 0.15;
+    // }
+
+    // .v-textarea {
+    //     height: 56px;
+    //     background-color: #fff;
+    // }
+
+    // .v-field__input {
+    //     height: 56px;
+    // }
+
+    // .v-field {
+    //     border-radius: 6px;
+
+    //     &--focused {
+    //         box-shadow: none !important;
+    //         // border: 1px solid red !important;
+    //     }
+
+    //     .v-field__outline.text-blue {
+    //         color: rgba(var(--v-theme-input-focus), 1) !important;
+    //     }
+    // }
+
+    // //   .field-label {
+    // //     padding-inline-start: 10px;
+    // //   }
+    // .field-label,
+    // .v-label {
+    //     font-weight: 500;
+    //     font-size: 0.875rem;
+    //     color: rgba(var(--v-theme-label), 1) !important;
+    // }
+}
+
+// .field {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 10px;
+// }
+
+// .flex {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+// }
+
+// .required-field {
+//   position: relative;
+
+//   &::before {
+//     content: '*';
+//     color: rgba(var(--v-theme-error), 1);
+//     position: absolute;
+//     inset: 0;
+//     font-weight: 500;
+//     font-size: 0.875rem;
+//     width: 1px;
+//   }
+// }
+
+// a {
+//     text-decoration: none;
+//     color: rgba(#687588, 1);
+//     font-size: 0.875rem;
+// }

@@ -1,85 +1,80 @@
-import Vue from "vue";
+import storage from '@/composables/useStorage'
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
+import * as directives from 'vuetify/directives'
+import * as components from 'vuetify/components'
+import { createVuetify } from 'vuetify'
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
+import { createI18n, useI18n } from 'vue-i18n'
+import { theme } from '@/data/theme'
+import { ar as vuetifyAR, en as vuetifyEN } from 'vuetify/locale'
+import en from '@/locales/en.json'
+import ar from '@/locales/ar.json'
+import { useNumConverter } from '@/composables/useNumConverter.js'
+// import { md3 } from 'vuetify/blueprints'
 
-// For full framework
-import Vuetify from "vuetify/lib/framework";
-// For a-la-carte components - https://vuetifyjs.com/en/customization/a-la-carte/
-// import Vuetify from 'vuetify/lib'
+// import '@/assets/sass/global/variables.scss';
 
-import * as directives from "vuetify/lib/directives";
-import i18n from "./vue-i18n";
-import config from "../configs";
-
-/**
- * Vuetify Plugin
- * Main components library
- *
- * https://vuetifyjs.com/
- *
- */
-Vue.use(Vuetify, {
-  directives
-});
-
-function getThemeConfigs() {
-  if (!localStorage.getItem("themeConfigs")) {
-    return false;
-  }
-  let data = JSON.parse(localStorage.getItem("themeConfigs"));
-  const configs = {};
-  data.forEach(({ key, value }) => {
-    const newKey = key
-      .split("_")
-      .map((word, index) => {
-        if (index !== 0) {
-          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+const vuetify = (app) => {
+    const i18n = new createI18n({
+        legacy: false, // Vuetify does not support the legacy mode of vue-i18n
+        locale: storage.get('locale') || import.meta.env.VITE_LOCALE,
+        fallbackLocale: storage.get('locale') || import.meta.env.VITE_LOCALE,
+        rtl: { ar: true },
+        messages: {
+            en: {
+                $vuetify: vuetifyEN,
+                ...en
+            },
+            ar: {
+                $vuetify: vuetifyAR,
+                ...ar
+            }
         }
-        return word.toLowerCase();
-      })
-      .join("");
-    configs[newKey] = value;
-  });
-  console.log(config);
+    })
+
+    // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+    const vuetify = createVuetify({
+        // blueprint: md3,
+        theme,
+        locale: {
+            adapter: createVueI18nAdapter({ i18n, useI18n })
+        },
+        components,
+        directives,
+        defaults: {
+            global: {
+                ripple: true
+            },
+            VTextField: {
+                variant: 'outlined',
+                density: 'comfortable',
+                color: 'blue'
+            },
+            VSelect: {
+                variant: 'outlined',
+                density: 'comfortable',
+                color: 'blue'
+            },
+            VBtn: {
+                rounded: 'md'
+            },
+            VDataTable: {
+                showSelect: true,
+                hideDefaultFooter: true,
+                itemsPerPageOptions: [5, 10, 20, 30, 50, 100]
+            },
+            VDataTableServer: {
+                itemsPerPageOptions: [5, 10, 20, 30, 50, 100]
+            },
+            VPagination: {
+                pageCount: 1
+            }
+        }
+    })
+
+    app.use(i18n)
+    app.use(vuetify)
 }
 
-// getThemeConfigs();
-
-export default new Vuetify({
-  rtl: config.theme.isRTL,
-  theme: {
-    dark: config.theme.globalTheme === "dark",
-    options: {
-      customProperties: true
-    },
-    themes: {
-      dark: config.theme.dark,
-      light: config.theme.light
-    }
-  },
-  lang: {
-    current: config.locales.locale,
-    t: (key, ...params) => i18n.t(key, params)
-  }
-});
-
-// export default function createVuetify(configPromise) {
-//   return configPromise.then(data => {
-//     const { isRTL, globalTheme, dark, light, locale } = data
-//     return new Vuetify({
-//       rtl: isRTL,
-//       theme: {
-//         dark: globalTheme === 'dark',
-//         options: {
-//           customProperties: true
-//         },
-//         themes: {
-//           dark,
-//           light
-//         }
-//       },
-//       lang: {
-//         current: locale,
-//         t: (key, ...params) => i18n.t(key, params)
-//       }
-//     })
-//   })
-// }
+export default vuetify

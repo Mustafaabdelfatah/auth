@@ -1,0 +1,52 @@
+
+::v-deep {
+    .v-field__outline {
+        border-radius: .625rem;
+        color: rgba(var(--v-theme-inputsBorder), 1);
+        --v-field-border-opacity: 1;
+    }
+
+    .v-field--error:not(.v-field--disabled) .v-field__outline {
+        color: rgb(var(--v-theme-error)) !important;
+    }
+
+    &.edit-btn {
+        background-color: rgba(var(--v-theme-tableEditBtn), 1) !important;
+    }
+
+    .v-btn {
+        border-radius: .5rem !important;
+
+
+        .v-btn__content {
+
+            svg {
+                transform: scale(1.2);
+                fill: rgba(var(--v-theme-white), 1);
+                color: rgba(var(--v-theme-white), 1);
+            }
+        }
+    }
+}
+
+
+.toggler {
+    box-shadow: 0 1px 2px 0 #1018280D;
+    border: 1px solid rgba(var(--v-theme-buttonsBorder));
+    border-radius: 10px;
+    width: 100%;
+    min-height: 48px;
+    height: auto !important;
+
+    button {
+        width: 50%;
+        border-radius: 0 !important;
+        color: rgba(var(--v-theme-on-surface), 1) !important;
+        min-height: 48px;
+        font-weight: bold;
+
+        &.v-btn--active {
+            color: rgba(var(--v-theme-white), 1) !important;
+        }
+    }
+}

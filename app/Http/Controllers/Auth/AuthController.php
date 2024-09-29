@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Employee;
 use App\Models\Merchant;
-use Illuminate\Http\JsonResponse;
  use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use App\Services\Auth\AuthService;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\Auth\LoginResource;
@@ -31,8 +32,9 @@ class AuthController extends Controller
 
         $user = $this->authService
         ->setGuard("api")
-        ->setModel(Merchant::class)
+        ->setModel(Employee::class)
         ->attempt($request);
+
 
         return successResponse(new LoginResource($user['user'], $user['token']), __('api.login_success'));
     }

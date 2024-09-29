@@ -1,106 +1,82 @@
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
+import permissionsMiddleware from '@/middlewares/permissions'
+import { useSettingsStore } from '@/stores/settings'
+import { useAuthStore } from '@/stores/auth'
 
-// Routes
-import AppsRoutes from "./apps.routes";
-import UIRoutes from "./ui.routes";
-import PagesRoutes from "./pages.routes";
-import UsersRoutes from "./users.routes";
-import RolesRoutes from "./roles.routes";
-import EcommerceRoutes from "./ecommerce.routes";
-import LandingRoutes from "./landing.routes";
-import SettingsRoutes from "./settings.routes";
-import PipesRoutes from "./pipes.routes";
-import FlightsRoutes from "./flights.routes";
-import ReportsRoutes from "./reports.routes";
-import filesRoutes from "./files.routes";
-import store from "@/store";
-import i18n from "@/plugins/vue-i18n";
+import { useAppStore } from '@/stores/app'
+import { useAppSettings } from '@/composables/useAppSettings'
+import { watch } from 'vue'
 
-Vue.use(Router);
+import { auth } from '@/router/routes/auth'
+import { main } from '@/router/routes/main'
+import { settings } from '@/router/routes/settings'
+import { users } from '@/router/routes/users'
+import { departments } from '@/router/routes/departments'
+import { sectors } from '@/router/routes/sectors'
+import { branches } from '@/router/routes/branches'
+import { positions } from '@/router/routes/positions'
+import { scenarios } from '@/router/routes/scenarios'
+import { templates } from '@/router/routes/templates'
+import { employees } from '@/router/routes/employees'
+import { profile } from '@/router/routes/profile'
+import storage from '@/composables/useStorage.js'
 
-export const routes = [
-  {
-    path: "/",
-    redirect: "/dashboard/analytics"
-  },
-  {
-    path: "/dashboard/analytics",
-    name: "dashboard_analytics",
-    meta: {
-      auth: true
+const routes = [
+    ...auth,
+    {
+        path: '/',
+        name: 'dashboard',
+        component: () => import('@/layouts/dashboardLayout.vue'),
+        meta: {
+            requiresAuth: true,
+            name_ar: 'dl.dashboard'
+        },
+        children: [
+            ...main,
+            ...settings,
+            ...users,
+            ...departments,
+            ...employees,
+            ...sectors,
+            ...branches,
+            ...positions,
+            ...scenarios,
+            ...templates,
+            ...profile
+        ]
     },
-    component: () =>
-      import("@/pages/dashboard/DashboardPage.vue"
-      )
-  },
-  ...AppsRoutes,
-  ...UIRoutes,
-  ...PagesRoutes,
-  ...UsersRoutes,
-  ...RolesRoutes,
-  ...EcommerceRoutes,
-  ...LandingRoutes,
-  ...SettingsRoutes,
-  ...PipesRoutes,
-  ...FlightsRoutes,
-  ...ReportsRoutes,
-  ...filesRoutes,
-
-  {
-    path: "/blank",
-    name: "blank",
-    component: () =>
-      import( "@/pages/BlankPage.vue")
-  },
-  {
-    path: "*",
-    name: "error",
-    component: () =>
-      import("@/pages/error/NotFoundPage.vue"),
-    meta: {
-      layout: "error"
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('@/layouts/404.vue'),
+        meta: {
+            name: 'headings.error'
+        }
     }
-  }
-];
+]
 
-const router = new Router({
-  mode: "history",
-  base: process.env.BASE_URL || "/",
-  // base:'/drones/',
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition;
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+})
 
-    return { x: 0, y: 0 };
-  },
-  routes
-});
+const { updateTitle } = useAppSettings()
 
-/**
- * Before each route update
- */
 router.beforeEach((to, from, next) => {
-  const token = store.state.auth.token;
+    const settingsStore = useSettingsStore()
+    const authStore = useAuthStore()
+    const appStore = useAppStore()
 
-  if (!token && to.meta.auth) {
-    return next({ name: "auth-signin" });
-  }
+    updateTitle(to, settingsStore, appStore)
+    watch(
+        () => appStore.locale.current,
+        () => {
+            updateTitle(to, settingsStore, appStore)
+        }
+    )
 
-  if (to.meta.permissions && to.meta.permissions.length > 0) {
-    let isAllowed = localStorage
-      .getItem("user_permissions")
-      .includes(to.meta.permissions);
-    if (!isAllowed) return next("auth-signin");
-  }
-  // document.title = to.meta.title
-  document.title = i18n.t(`pageTitles.${to.name}`)
+    if (to.meta.requiresAuth && !authStore.isLoggedIn) next({ name: 'login' })
+    else next()
+})
 
-  return next();
-});
-
-/**
- * After each route update
- */
-router.afterEach((to, from) => {});
-
-export default router;
+export default router

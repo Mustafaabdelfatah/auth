@@ -1,0 +1,41 @@
+* {
+    font-family: 'Tajawal', 'PublicSans', sans-serif !important;
+}
+
+html {
+
+}
+
+body {
+
+}
+
+ul {
+    list-style: none;
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+    // border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--v-theme-primary), 1);
+    border-radius: .9rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--v-theme-primary), .8);
+}
+
+
+:root {
+    --v-layout-left: 0 !important;
+}

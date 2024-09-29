@@ -19,7 +19,7 @@ Route::post('register', [AuthController::class, 'register']);
 
 // Route::middleware(['auth:sanctum'])->group(function () {
 
-Route::get('general-setting', [SettingController::class, 'generalSettings']);
+Route::get('settings', [SettingController::class, 'generalSettings']);
 
      /*
     |--------------------------------------------------------------------------

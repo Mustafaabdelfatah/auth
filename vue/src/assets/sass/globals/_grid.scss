@@ -1,0 +1,31 @@
+// Base margin and padding variables
+$gaps: (
+    1: 2px,
+    2: 4px,
+    3: 6px,
+    4: 8px,
+    5: 10px,
+    6: 12px,
+    7: 14px,
+    8: 16px,
+    9: 18px,
+    10: 20px,
+);
+
+@mixin row-gap($gap) {
+    margin: -#{$gap} !important;
+
+    >.v-col,
+    >[class*=v-col-] {
+        padding: #{$gap} !important;
+    }
+}
+
+// Generate classes for each gap
+@for $i from 1 through length($gaps) {
+    $gap-value: map-get($gaps, $i);
+
+    .v-row-g-#{$i} {
+        @include row-gap($gap-value);
+    }
+}
